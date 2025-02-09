@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine?</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="script.js"></script>
+    <style>
+        body {
+            background-color: #ffccdd;
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            padding: 50px;
+        }
+        .hidden {
+            display: none;
+        }
+        .confetti {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <audio id="background-music" loop>
+        <source src="blue.mp3" type="audio/mpeg">
+    </audio>
+    
+    <canvas class="confetti" id="confettiCanvas"></canvas>
+    
+    <div class="container" id="page1">
+        <h1>Hello dear sweetness, hope you had a nice day at work!</h1>
+        <p>I have made a little something for you.</p>
+        <button onclick="nextPage(2)">Continue</button>
+    </div>
+
+    <div class="container hidden" id="page2">
+        <p>My love, I know we haven't been in the best of terms these past few days. </p>
+        <p>Sometimes I struggle with communication, and for that, I am truly sorry. </p>
+        <p>But no matter what, one thing that will never change is how much I love and appreciate you.</p>
+        <p>Our first Valentine's Day is coming up, and I would never want to spend it fighting with you.</p>
+        <p>So, can we put all this behind us and enjoy our love?</p>
+        <button onclick="nextPage(3)">Apology Accepted</button>
+    </div>
+
+    <div class="container hidden" id="page3">
+        <p>You have been my source of happiness, and I feel lucky to have you in my life.</p>
+        <p>Since the day we met, you’ve made my life brighter and more beautiful.</p>
+		<p>The time I saw you inperson for the first time you being shy to get on the bike, the smile and happiness I saw on your face when I proposed you, the time you were really shy
+		 to even look at my face, the time you were shy on video calls, the time we touched each other for the first time, the time you bought so many gifts for me for my b'day, the time 
+		 we did it for the first time, your birthday celebration and all the little things you do like sending gifts through rahul when he visited bangalore... all this, all the love
+		 you have for me. I feel tremendously blessed when I think of you...you are the best thing that has happened to me.</p>
+        <p>I love you, my sweetheart, more than words can express!</p>
+        <button onclick="nextPage(4)">Next</button>
+    </div>
+
+    <div class="container hidden" id="page4">
+        <p>Now that you have accepted my apology and I’ve put a smile on your face. MAY I ASK YOU SOMETHING??</p>
+        <button onclick="nextPage(5)">YES</button>
+    </div>
+
+    <div class="container hidden" id="page5">
+        <h2>My sweetheart, my happiness, my sweetness, My sweeetaaaa...</h2>
+        <h2 id="question" class="hidden">WILL YOU BE MY VALENTINE for this valentine's day??</h2>
+        <button class="hidden" id="yes-button" onclick="startConfetti(); yesAnswer()">Yes</button>
+        <button class="tricky hidden" id="no-button" onclick="moveButton(this)">No</button>
+    </div>
+
+    <div class="container hidden" id="page6">
+	    <h1>Hooorraaaaaay, SHE SAID YES!!!!!</h1>
+        <h2>I love you more and more every day sweetness! And I am missing you here like crazy hope we get to meet soon!!!</h2>
+        <img src="Animation.gif" alt="Romantic Animation">
+        <p>Leave me a message, my love:</p>
+        <form action="https://docs.google.com/forms/d/e/1FAIpQLSeB497r3BSJBa-LAi4jcJZIbhA8ts9djRUP93Tt0xEBERCzZA/formResponse" method="POST" target="_blank">
+            <textarea name="entry.1666833352" id="message" rows="4" cols="50" required></textarea>
+            <br>
+            <button type="submit">Send Message</button>
+        </form>
+    </div>
+
+    <script>
+        function nextPage(pageNumber) {
+            document.querySelectorAll('.container').forEach(div => div.classList.add('hidden'));
+            document.getElementById(`page${pageNumber}`).classList.remove('hidden');
+            if (pageNumber === 5) {
+                setTimeout(() => {
+                    document.getElementById('question').classList.remove('hidden');
+                    document.getElementById('yes-button').classList.remove('hidden');
+                    document.getElementById('no-button').classList.remove('hidden');
+                }, 3000);
+            }
+			if (pageNumber === 2) {
+        let audio = document.getElementById("background-music");
+        if (audio.paused) {
+            audio.play().catch(error => console.log("Autoplay blocked:", error));
+        }
+    }
+        }
+        function yesAnswer() {
+            nextPage(6);
+        }
+        function moveButton(button) {
+            button.style.position = 'absolute';
+            button.style.top = Math.random() * window.innerHeight + 'px';
+            button.style.left = Math.random() * window.innerWidth + 'px';
+        }
+        function startConfetti() {
+            const confettiCanvas = document.getElementById('confettiCanvas');
+            const ctx = confettiCanvas.getContext('2d');
+            confettiCanvas.width = window.innerWidth;
+            confettiCanvas.height = window.innerHeight;
+            let particles = [];
+            for (let i = 0; i < 100; i++) {
+                particles.push({
+                    x: Math.random() * confettiCanvas.width,
+                    y: Math.random() * confettiCanvas.height,
+                    r: Math.random() * 4 + 1,
+                    d: Math.random() * 5 + 1
+                });
+            }
+            function drawConfetti() {
+                ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+                ctx.fillStyle = "#ff4d79";
+                particles.forEach(p => {
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                particles.forEach(p => {
+                    p.y += p.d;
+                    if (p.y > confettiCanvas.height) {
+                        p.y = 0;
+                    }
+                });
+                requestAnimationFrame(drawConfetti);
+            }
+            drawConfetti();
+        }
+    </script>
+</body>
+</html>
